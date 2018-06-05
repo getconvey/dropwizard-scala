@@ -38,8 +38,8 @@ object DropwizardScala extends Build {
       connection = "git://github.com/dropwizard/dropwizard-scala.git",
       devConnection = Option("git@github.com@:dropwizard/dropwizard-scala.git")
     )),
-    scalaVersion := "2.12.1",
-    crossScalaVersions := Seq("2.10.6", "2.11.11", "2.12.2"),
+    scalaVersion := "2.11.8",
+    crossScalaVersions := Seq("2.10.6", "2.11.8", "2.12.2"),
     scalacOptions ++= scalaVersion.map(CompileOptions.scala).value,
     javacOptions ++= CompileOptions.java,
     resolvers in ThisBuild ++= Seq(
@@ -88,11 +88,12 @@ object DropwizardScala extends Build {
   }
 
   def repository(isSnapshot: Boolean) = {
-    val nexus = "https://oss.sonatype.org/"
+    val releases = "s3://artifacts.getconvey.com/maven/releases"
+    val snapshots = "s3://artifacts.getconvey.com/maven/snapshots"
     if (isSnapshot)
-      Some("snapshots" at nexus + "content/repositories/snapshots")
+      Some("snapshots" at snapshots)
     else
-      Some("releases" at nexus + "service/local/staging/deploy/maven2")
+      Some("releases" at releases)
   }
 
   lazy val core = module("core")
