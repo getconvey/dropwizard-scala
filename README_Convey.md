@@ -4,29 +4,36 @@ Building and deploying to S3
 There are SBT plugins to deploy to S3, but unfortunately, the ones
 I tried do not generate and update `maven-metadata.xml` files, which
 results in errors when Maven attempts to resolve the artifacts.  Because
-of that, we use SBT to build the artifacts and Maven to deploy them.
+of that, we use SBT to build and publish the artifacts (including the 
+pom files) and Maven to do a second-pass deploy that generates the
+`maven-metadata.xml` files.
 
-Building
---------
+Updating the version
+--------------------
+
+Set the version in `project/Project.scala`.  If you are deploying a 
+release, then after you merge, tag the commit.  Be sure to push the tag; 
+deployment will work even if you forget to push!  If you are releasing
+a snapshot, you don't need to tag the commit.
+
+First pass with SBT
+-------------------
 
 ```$bash
-$ sbt
+$ sbt clean publish
 [info] Loading project definition from /Users/david/dev/dropwizard-scala/project
 (etc.)
-
-> ++ 2.11.8
-[info] Setting version to 2.11.8
-[info] Reapplying settings...
-(etc.)
-
-> package
-(various output)
-[info] Done packaging.
-[success] Total time: 12 s, completed Jun 5, 2018 5:40:12 PM
+[success] Total time: 35 s, completed Jun 5, 2018 6:16:17 PM
 ```
 
-Deploying
----------
+This builds and publishes the artifacts, but without the `maven-metadata.xml` 
+files.
+
+Second pass with Maven
+----------------------
+
+Note that the version used in this step must match the version set in
+`project/Project.scala`.
 
 To deploy a snapshot version, pass the version to the deploy script:
 

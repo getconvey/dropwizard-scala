@@ -9,3 +9,6 @@ addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.6.0")
 
 // release to Sonatype OSS
 addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "1.1")
+
+// release to S3
+addSbtPlugin("com.frugalmechanic" % "fm-sbt-s3-resolver" % "0.14.0")
